@@ -1,0 +1,4 @@
+{
+  "errorCode": "INVALID_REQUEST",
+  "errorMessage": "customers must not be empty"
+}

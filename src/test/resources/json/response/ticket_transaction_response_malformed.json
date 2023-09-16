@@ -1,0 +1,4 @@
+{
+  "errorCode": "INVALID_REQUEST",
+  "errorMessage": "Cannot deserialize value of type `java.util.ArrayList<per.duyd.interview.mts.dto.Customer>` from Object value (token `JsonToken.START_OBJECT`)\n at [Source: (org.springframework.util.StreamUtils$NonClosingInputStream); line: 3, column: 16] (through reference chain: per.duyd.interview.mts.dto.TicketTransactionRequest[\"customers\"])"
+}

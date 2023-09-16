@@ -1,0 +1,21 @@
+{
+  "transactionId": 2,
+  "tickets": [
+    {
+      "ageGroup": "Adult",
+      "quantity": 1,
+      "totalCost": 25.00
+    },
+    {
+      "ageGroup": "Children",
+      "quantity": 3,
+      "totalCost": 11.25
+    },
+    {
+      "ageGroup": "Teen",
+      "quantity": 1,
+      "totalCost": 12.00
+    }
+  ],
+  "totalCost": 48.25
+}

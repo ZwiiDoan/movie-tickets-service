@@ -1,0 +1,4 @@
+{
+  "errorCode": "INVALID_REQUEST",
+  "errorMessage": "customers must have unique customer names"
+}

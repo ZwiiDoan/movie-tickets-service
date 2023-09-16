@@ -1,0 +1,25 @@
+{
+  "transactionId": 1,
+  "customers": [
+    {
+      "name": " ",
+      "age": 36
+    },
+    {
+      "name": "Jane Smith",
+      "age": 3
+    },
+    {
+      "name": "George Smith",
+      "age": 8
+    },
+    {
+      "name": "Brad Smith",
+      "age": 9
+    },
+    {
+      "name": "Adam Smith",
+      "age": 17
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.1.3'
+    id 'io.spring.dependency-management' version '1.1.3'
+    id 'checkstyle'
+    id 'jacoco'
+    id 'com.github.spotbugs' version "6.0.0-beta.3"
+    id "org.owasp.dependencycheck" version "8.4.0"
+}
+
+group = 'per.duyd.interview'
+version = '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation("org.apache.commons:commons-lang3:${commonLang3Version}")
+
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+//    implementation 'io.zipkin.reporter2:zipkin-reporter-brave' //Require a Zipkin Server
+//    implementation 'com.github.loki4j:loki-logback-appender' //Require a Zipkin Server
+
+    compileOnly 'org.projectlombok:lombok'
+
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.12.0'
+}
+
+checkstyle {
+    toolVersion = '10.12.3'
+}
+
+jacoco {
+    toolVersion = "0.8.9"
+}
+
+spotbugs {
+    toolVersion = '4.7.3'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+build {
+    finalizedBy(jacocoTestReport)
+}
+
+def excludeCoverage = [
+        "per/duyd/**/dto/**",
+        "per/duyd/**/entity/**",
+        "per/duyd/**/enums/**",
+        "per/duyd/**/exception/**",
+        "per/duyd/**/TicketTransactionApplication**"
+]
+
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: excludeCoverage)
+        }))
+    }
+    finalizedBy(jacocoTestCoverageVerification)
+}
+
+jacocoTestCoverageVerification {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: excludeCoverage)
+        }))
+    }
+
+    violationRules {
+        rule {
+            limit {
+                counter = "INSTRUCTION"
+                value = "COVEREDRATIO"
+                minimum = 0.95
+            }
+        }
+        rule {
+            limit {
+                counter = "BRANCH"
+                value = "COVEREDRATIO"
+                minimum = 0.95
+            }
+        }
+    }
+}
+
+spotbugs {
+    excludeFilter = file("$projectDir/config/spotbugs/excludeFilter.xml")
+    spotbugsTest {
+        enabled = false
+    }
+    spotbugsMain {
+        reports {
+            html {
+                required = true
+                outputLocation = file("$buildDir/reports/spotbugs/main/spotbugs.html")
+                stylesheet = 'fancy-hist.xsl'
+            }
+        }
+    }
+}
