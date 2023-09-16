@@ -9,6 +9,62 @@ Implement a Java application which will expose an API call to take transaction a
   cost
 * The total cost of all movie tickets for that transaction
 
+Sample Request:
+
+```json
+{
+  "transactionId": 2,
+  "customers": [
+    {
+      "name": "John Smith",
+      "age": 36
+    },
+    {
+      "name": "Jane Smith",
+      "age": 3
+    },
+    {
+      "name": "George Smith",
+      "age": 8
+    },
+    {
+      "name": "Brad Smith",
+      "age": 9
+    },
+    {
+      "name": "Adam Smith",
+      "age": 17
+    }
+  ]
+}
+```
+
+Sample Response:
+
+```json
+{
+  "transactionId": 2,
+  "tickets": [
+    {
+      "ageGroup": "Adult",
+      "quantity": 1,
+      "totalCost": 25.00
+    },
+    {
+      "ageGroup": "Children",
+      "quantity": 3,
+      "totalCost": 11.25
+    },
+    {
+      "ageGroup": "Teen",
+      "quantity": 1,
+      "totalCost": 12.00
+    }
+  ],
+  "totalCost": 48.25
+}
+```
+
 ### Implementation Details
 
 Different ticket prices and discounts can be configured in [application.yml](src/main/resources/application.yml)
@@ -51,6 +107,8 @@ The API Request body is validated by following rules:
 * `customers` list must not be empty and must have unique customer names
 * `customer.name` must not be empty or blank
 * `customer.age` must be a positive number
+
+`totalCost` in responses are rounded to nearest cent.
 
 ### Build
 
